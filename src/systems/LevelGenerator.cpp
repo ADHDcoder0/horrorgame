@@ -1,44 +1,16 @@
-#include <stdio.h>
-#include <vector>
-#include <stack>
-#include <random>
-#include "RoomTester.cpp"
-#include <iostream>
-class Cor{
-    public:
-    int x;
-    int y;
-};
 
-class IntersectionDirection{
-    public:
-    bool up;
-    bool down;
-    bool left;
-    bool right;
+#include "LevelGenerator.h"
 
-    IntersectionDirection(){
-        up=false;
-        down=false;
-        left=false;
-        right=false;
-    };
-};
 
-class DFS{
-    public:
-    int Xsize , Ysize;
-    std::vector <std::vector<IntersectionDirection>> world;
-    DFS(int xSize = 4, int ySize = 4 ) {
+DFS::DFS(int xSize = 4, int ySize = 4 ){
         Xsize=xSize , Ysize=ySize;
 
         world.resize(Xsize);
         for(int i=0;i<Xsize;i++){
         world[i].resize(Ysize);
         }
-    }
-    void Generate();
-};
+}
+
 
 
  void DFS::Generate(){
@@ -116,76 +88,51 @@ class DFS{
             Temp.pop(); // Backtrack
         }
     }
-    }
-    
-
-
-
-class Level{
-    public:
-    std::vector<std::vector<Room *>> Map;
-    int Xsize,Ysize;
-    Level(int x=5,int y=5){
-        Xsize=x,Ysize=y;
-        DFS dfs(x,y);
-        dfs.Generate();
-
-        Map.resize(Xsize);
-        for(int i=0;i<Xsize;i++){
-            Map[i].resize(Ysize);
-        }
-
-        for(int i=0;i<Xsize;i++){
-            for(int j=0;j<Ysize;j++){
-                std::random_device rd;
-                std::mt19937 gen(rd());
-                std::uniform_int_distribution<> dist(7,18);
-                int M=dist(gen); if(M==18){M=5;}
-                Map[i][j]=new Room(M,M,dfs.world[i][j].left,dfs.world[i][j].right,dfs.world[i][j].up,dfs.world[i][j].down);
-            }
-        }
-    }
-    ~Level(){
-        for(int i=0;i<Xsize;i++){
-            for(int j=0;j<Ysize;j++){
-               delete Map[i][j];
-            }
-        }
-    }
-};
-
-
-int main(){
-    int x=3,y=3;
-    Level world(x,y);
-    printf("\033[2J");
-    for(int i=0;i<x;i++){
-        for(int j=0;j<y;j++){
-            int temp1=1,temp2=1;
-            if(i!=0){temp1=(i*17)+1;}
-            if(j!=0){temp2=(j*2*17)+1;}
-
-            printf("\033[%d;%dH",temp1,temp2);
-            //Room
-            for(int k=0;k<17;k++){
-                for(int l=0;l<17;l++){
-                    if(world.Map[i][j]->tiles[k][l]==&Floor){
-                        printf("\033[48;2;0;255;255m  ");
-                    }
-                    if(world.Map[i][j]->tiles[k][l]==&Empty){
-                        printf("\033[48;2;50;50;50m  ");
-                    }
-                    if(world.Map[i][j]->tiles[k][l]==&Wall){
-                        printf("\033[48;2;100;255;0m  ");
-                    }
-                }
-                    printf("\033[B\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D\033[D");
-            }
-            //===============================
-        }
-        
-    }
-    
-
-    return 0;
 }
+    
+
+
+
+Level::Level(int x=5,int y=5){           
+    Xsize=x,Ysize=y;
+    DFS dfs(x,y);
+    dfs.Generate();
+    Map.resize(Xsize);
+    for(int i=0;i<Xsize;i++){
+        Map[i].resize(Ysize);
+    }
+    for(int i=0;i<Xsize;i++){
+        for(int j=0;j<Ysize;j++){
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<> dist(7,18);
+            int M=dist(gen); if(M==18){M=5;}
+            Map[i][j]=new Room(M,M,dfs.world[i][j].left,dfs.world[i][j].right,dfs.world[i][j].up,dfs.world[i][j].down);
+        }
+    }
+}
+
+auto Level::GetTilePtr(int RoomX , int RoomY ,int TileX , int TileY){
+        // Range: [0,max]
+        if(RoomX>=Xsize){RoomX=Xsize-1;}
+        if(RoomY>=Ysize){RoomY=Ysize-1;}
+        if(RoomX<0){RoomX=0;}
+        if(RoomY<0){RoomY=0;}
+
+        if(TileX<0){TileX=0;}
+        if(TileY<0){TileY=0;}
+        if(TileX>=17){TileX=16;}
+        if(TileY>=17){TileY=16;}
+
+        return Map[RoomX][RoomY]->tiles[TileX][TileY];
+    }
+   
+
+Level::~Level(){
+    for(int i=0;i<Xsize;i++){
+        for(int j=0;j<Ysize;j++){
+           delete Map[i][j];
+        }
+    }
+}
+

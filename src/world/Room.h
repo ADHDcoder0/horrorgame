@@ -40,6 +40,11 @@ class Room {
         //constructor
         Room(int Xsize , int Ysize , bool LeftGate, bool RightGate , bool TopGate , bool BottomGate);//Xsize and Ysize <= 17 blocks 
 
+
+
+
+
+        
         void Update();
         void Draw(int tileSize);
         void Generate();  //-> for assigning floor and border 

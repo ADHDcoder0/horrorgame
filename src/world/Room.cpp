@@ -1,19 +1,25 @@
 #include "Room.h"
 
 Room::Room(int Xsize , int Ysize , bool LeftGate, bool RightGate , bool TopGate , bool BottomGate){
+    
+    
+    //Fix OutofBounds 
+    if( Xsize > 17  ){    Xsize=  17 ;  }
+    if( Ysize > 17  ){    Ysize=  17 ;  }
+    if( Xsize < 5  ){    Xsize=  5 ;  }
+    if( Ysize < 5  ){    Ysize=  5 ;  }
 
     //Defining Floor 
-    
     Floor.type=TileType::Floor;
     Floor.isMovable=true;
+    Floor.visible=true;
 
     //Defining Walls
-   
     Wall.type=TileType::Wall;
     Wall.isMovable = false;
+    Wall.visible=true;
 
     //Defining Empty
-    
     Empty.type=TileType::Wall;
     Empty.isMovable=false;
     Empty.visible=false;
