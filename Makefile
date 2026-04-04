@@ -1,6 +1,11 @@
-include config.mk
+# include config.mk
 
 TARGET = build/game.exe
+
+RAYLIB_INCLUDE = C:/raylib/raylib/src
+RAYLIB_LIB = C:/raylib/raylib/src
+GXX = C:/raylib/w64devkit/bin/g++
+
 SRC  = $(shell find src -name "*.cpp")
 
 FLAGS   = -std=c++17 -g -fdiagnostics-color=always

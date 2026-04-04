@@ -1,23 +1,58 @@
-#include "Room.h"
+#include <stdio.h>
+#include <unistd.h>
+#include<vector>
+#include<string>
+
+bool Top[4]={true,true,true,true};
+
+enum class TileType {
+    Floor,
+    Wall,
+    Stair,
+    Exit,
+    HidingSpot,
+    //Gas Zone and Fog Zone will be added 
+}; 
+
+struct Tile{  // a single tile 
+    TileType type =TileType::Floor;
+    bool visible = true;
+    bool isMovable = false;
+};
+
+struct TaskItem{
+    float x,y;
+    std::string name;//we need to expand this further 
+};
+
+Tile Floor;
+Tile Wall;
+Tile Empty;
+
+class Room {
+    public:
+        int id;
+        int Xsize,Ysize;
+        
+        std::vector<std::vector<Tile*>> tiles{17, std::vector<Tile*>(17, nullptr)};
+        std::vector<TaskItem> items;
+
+        //constructor
+        Room(int Xsize , int Ysize , bool LeftGate, bool RightGate , bool TopGate , bool BottomGate);//Xsize and Ysize <= 17 blocks 
+};
+
 
 Room::Room(int Xsize , int Ysize , bool LeftGate, bool RightGate , bool TopGate , bool BottomGate){
-    
-    
-    //Fix OutofBounds 
-    if( Xsize > 17  ){    Xsize=  17 ;  }
-    if( Ysize > 17  ){    Ysize=  17 ;  }
-    if( Xsize < 5  ){    Xsize=  5 ;  }
-    if( Ysize < 5  ){    Ysize=  5 ;  }
 
     //Defining Floor 
+    
     Floor.type=TileType::Floor;
     Floor.isMovable=true;
-    Floor.visible=true;
 
     //Defining Walls
+    
     Wall.type=TileType::Wall;
     Wall.isMovable = false;
-    Wall.visible=true;
 
     //Defining Empty
     Empty.type=TileType::Wall;
@@ -107,3 +142,32 @@ Room::Room(int Xsize , int Ysize , bool LeftGate, bool RightGate , bool TopGate 
         tiles[startRow][9 ]= &Floor;
     }
 }
+
+// int main(){
+//     for(int m=10;m<16;m++){
+//         for(int i=13;i<18;i++){
+//             for(int j=13;j<18;j++){
+//                 Room room(i,j,m&1,m&2,m&4,m&8);
+//                 for(int I=0;I<17;I++){
+//                     for(int J=0;J<17;J++){
+//                        if(room.tiles[I][J]== (&room.Wall)){
+//                             printf("\033[48;2;100;255;0m  ");
+//                        }
+//                        if(room.tiles[I][J]== (&room.Floor)){
+//                             printf("\033[48;2;0;255;255m  ");
+//                        } 
+//                        if(room.tiles[I][J]== (&room.Empty)){
+//                             printf("\033[48;2;50;50;50m  ");
+//                        }
+//                     }
+//                     printf("\033[48;2;0;0;0m\n");
+//                 }
+//                 usleep(10000);
+//                 printf("\033[2J\033[H");
+//             }
+//         }
+//     }
+
+    
+//     return 0;
+// }
