@@ -1,4 +1,4 @@
 #pragma once
 #include "../GameObject.h"
 
-class Zombie : public GameObject {};
+class Zombie : public GameObject {}; 
