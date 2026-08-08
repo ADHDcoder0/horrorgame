@@ -12,6 +12,6 @@ class GameObject {
         virtual void Update(float dt) = 0;  // to convert it into a abstaract class and this function must be their in the derived calss these must be overridden
         virtual void Draw() const = 0; //const outside mean no modification to the obejct 
 
-
+ 
 
 };      

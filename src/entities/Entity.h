@@ -15,4 +15,4 @@ protected:
         x += dx * speed * dt;  // better way to implemnt speed make its frame independent
         y += dy * speed * dt;
     }
-};
+}; 

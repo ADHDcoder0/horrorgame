@@ -2,6 +2,9 @@
 #include <vector>
 #include <memory>
 
+#include "systems/LevelGenerator.h"
+#include "entities/Player.h"
+
 enum class GameState {
     Playing,
     FinalEscape,
@@ -9,17 +12,15 @@ enum class GameState {
     Win
 };
 
-class Player;
 class Zombie;
 class Room;
 class RampageController;
 class TaskManager;
 
+
 class GameManager{
 
-    // ! encapsulation is pending evrything public loko into it kushagra 
-
-
+   
 
     public: 
     GameState state = GameState::Playing;
@@ -27,11 +28,11 @@ class GameManager{
 
     std::unique_ptr<Player> player;
     std::unique_ptr<Zombie> zombie;
-    std::vector<std::unique_ptr<Room>> rooms;
-
-
+    std::unique_ptr<Level> level;
     std::unique_ptr<RampageController> rampageCtrl;
     std::unique_ptr<TaskManager> taskManager; 
+
+
 
 
     GameManager();// constructor

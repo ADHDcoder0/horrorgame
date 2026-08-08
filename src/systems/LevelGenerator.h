@@ -3,6 +3,7 @@
 #include <stack>
 #include <random>
 #include <iostream>
+#include "../GameObject.h"
 #include "../world/Room.h"
 
 class Cor{  
@@ -11,7 +12,7 @@ class Cor{
     int y;
 };
 
-class IntersectionDirection{
+class IntersectionDirection{ 
     public:
     bool up;
     bool down;
@@ -41,8 +42,9 @@ class Level{
     std::vector<std::vector<Room *>> Map;
 
     Level(int x=5,int y=5);
-
+    
     auto GetTilePtr(int RoomX , int RoomY ,int TileX , int TileY);
+    void RenderLevel(Vector2 PlayerPos , int Radius);
    
     ~Level();
 };

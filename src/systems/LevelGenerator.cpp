@@ -1,8 +1,8 @@
-
+#include "raylib.h"
 #include "LevelGenerator.h"
 
 
-DFS::DFS(int xSize = 4, int ySize = 4 ){
+DFS::DFS(int xSize , int ySize ){
         Xsize=xSize , Ysize=ySize;
 
         world.resize(Xsize);
@@ -93,7 +93,7 @@ DFS::DFS(int xSize = 4, int ySize = 4 ){
 
 
 
-Level::Level(int x=5,int y=5){           
+Level::Level(int x,int y){           
     Xsize=x,Ysize=y;
     DFS dfs(x,y);
     dfs.Generate();
@@ -113,7 +113,7 @@ Level::Level(int x=5,int y=5){
 }
 
 auto Level::GetTilePtr(int RoomX , int RoomY ,int TileX , int TileY){
-        // Range: [0,max]
+        // Range: [0,16]
         if(RoomX>=Xsize){RoomX=Xsize-1;}
         if(RoomY>=Ysize){RoomY=Ysize-1;}
         if(RoomX<0){RoomX=0;}
@@ -126,6 +126,34 @@ auto Level::GetTilePtr(int RoomX , int RoomY ,int TileX , int TileY){
 
         return Map[RoomX][RoomY]->tiles[TileX][TileY];
     }
+
+void Level::RenderLevel(Vector2 PlayerPos , int RoomChunkSize){
+    int x = (PlayerPos.x) ,  y = (PlayerPos.y);
+    int RoomX = x/(TILE_SIZE*17) , RoomY = y/(TILE_SIZE*17);
+
+    x = RoomX*(TILE_SIZE*17);
+    y = RoomY*(TILE_SIZE*17);
+    x -= (TILE_SIZE*17)*(RoomChunkSize/2);
+    y -= (TILE_SIZE*17)*(RoomChunkSize/2);
+    RoomX -= (RoomChunkSize/2);
+    RoomY -= (RoomChunkSize/2);
+
+    for(int i=0;i<RoomChunkSize;i++){
+        for(int j=0;j<RoomChunkSize;j++){
+            int CordX = RoomX+i;
+            int CordY = RoomY+j;
+            if(CordX<0 || CordX>=Xsize){
+                CordX=0;
+            }
+            if(CordY<0 || CordY>=Ysize){
+                CordY=0;
+            }
+            // Map[CordX][CordY]->Draw(Vector2 {(float)(x+(i*TILE_SIZE*17)) ,(float)( y+(j*TILE_SIZE*17))});
+            Map[CordX][CordY]->Draw(Vector2 {(float)(CordX*(TILE_SIZE*17)) ,(float)(CordY*(TILE_SIZE*17))});
+        }
+    }
+}
+   
    
 
 Level::~Level(){

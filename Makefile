@@ -1,21 +1,19 @@
-# include config.mk
-
+# Project settings
 TARGET = build/game.exe
+SRC    = $(shell find src -name "*.cpp")
 
-RAYLIB_INCLUDE = C:/raylib/raylib/src
-RAYLIB_LIB = C:/raylib/raylib/src
-GXX = C:/raylib/w64devkit/bin/g++
+# Compiler settings
+GXX    = C:/raylib/w64devkit/bin/g++
+FLAGS  = -std=c++17 -g -fdiagnostics-color=always
+INCLUDE= -I C:/raylib/raylib/src -Isrc
+LIBS = -lraylib -lopengl32 -lgdi32 -lwinmm
 
-SRC  = $(shell find src -name "*.cpp")
-
-FLAGS   = -std=c++17 -g -fdiagnostics-color=always
-INCLUDE = -I$(RAYLIB_INCLUDE) -Isrc
-LIBS    = -L$(RAYLIB_LIB) -lraylib -lopengl32 -lgdi32 -lwinmm
-
+# Default build
 all: $(TARGET)
 
 $(TARGET): $(SRC)
 	$(GXX) $(FLAGS) $(SRC) -o $(TARGET) $(INCLUDE) $(LIBS)
 
+# Clean build output
 clean:
 	del build\game.exe

@@ -1,8 +1,10 @@
 #pragma once
-#include "../GameObject.h"
+#include "raylib.h"
 #include<vector>
 #include<string>
 
+
+#define TILE_SIZE 64
 enum class TileType {
     Floor,
     Wall,
@@ -14,10 +16,11 @@ enum class TileType {
 
 struct Tile{  // a single tile 
     TileType type =TileType::Floor;
+    Texture2D texture;
     bool visible = true;
     bool isMovable = false;
 };
-
+ 
 struct TaskItem{
     float x,y;
     std::string name;//we need to expand this further 
@@ -46,7 +49,7 @@ class Room {
 
         
         void Update();
-        void Draw(int tileSize);
+        void Draw(Vector2 Pos);
         void Generate();  //-> for assigning floor and border 
         
         bool isWalkable(int tx,int ty) const; // -> return if you canwalk in the grid or not 
@@ -55,7 +58,7 @@ class Room {
 
   
         void GenerateItem(const std::string& itemName);  // gives the bound of room in  pixels
-
+        ~Room();
 };
 
 // class Room {

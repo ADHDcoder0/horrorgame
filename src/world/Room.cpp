@@ -24,6 +24,15 @@ Room::Room(int Xsize , int Ysize , bool LeftGate, bool RightGate , bool TopGate 
     Empty.isMovable=false;
     Empty.visible=false;
     
+    //Defining Textures
+    auto FloorImg = LoadImage("../texture/floor.png");
+    auto WallImg = LoadImage("../texture/wall.png");
+    auto LavaImg = LoadImage("../texture/lava.png");
+
+    Floor.texture = LoadTextureFromImage(FloorImg);
+    Wall.texture = LoadTextureFromImage(WallImg);
+    Empty.texture = LoadTextureFromImage(LavaImg);
+
     //Filling Room with empty
     for(int i=0;i<17;i++){
         for(int j=0;j<17;j++){
@@ -106,4 +115,19 @@ Room::Room(int Xsize , int Ysize , bool LeftGate, bool RightGate , bool TopGate 
         tiles[startRow][8 ]= &Floor;
         tiles[startRow][9 ]= &Floor;
     }
+}
+
+void Room::Draw(Vector2 Pos){
+    for(int i=0;i<17;i++){
+        for(int j=0;j<17;j++){
+            DrawTexture(tiles[i][j]->texture,Pos.x+(TILE_SIZE*i),Pos.y+(TILE_SIZE*j),WHITE);
+        }
+    }
+}
+
+Room::~Room() {
+    UnloadTexture(Floor.texture);
+    UnloadTexture(Wall.texture);
+    UnloadTexture(Empty.texture);
+    // tiles[i][j] are just pointers to these three, so no need to delete them
 }
